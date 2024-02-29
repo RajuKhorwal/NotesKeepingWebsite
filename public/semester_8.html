@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multiple PDF Viewer</title>
+  <!-- Include Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="d-flex justify-content-center align-items-center" style="height: 100px;">
+    <div>
+      <h2 class="text-primary" style="font-family:'Times New Roman', Times, serif;">View & Download Papers of Semester 8
+      </h2>
+    </div>
+  </div>
+  <hr>
+  <div class="container mt-4">
+    <div class="row" id="pdfContainer">
+      <div class="col-sm-12 col-lg-4 col-md-6 col-12 mb-4">
+        <div class="card shadow">
+          <div class="card-body d-flex flex-column align-items-center"
+            style="background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);">
+            <!-- <h3 class="card-title text-center mb-3" style="color: white; font-size: 2rem;">1st Semester</h3> -->
+            <h4 class="card-title text-center " style="color: rgb(21, 21, 21); font-size: 2rem;">Chemistry</h4>
+            <hr style="width: 50%; border-color: rgb(240, 233, 233);">
+            <div class="embed-responsive embed-responsive-16by9 mb-3">
+              <embed class="embed-responsive-item" src="/images/Ch1.pdf" type="application/pdf">
+            </div>
+            <div class="text-center mt-auto">
+              <a href="#" class="btn btn-light mx-2 open-pdf" data-pdf-path="/images/Ch1.pdf">Open PDF</a>
+              <a href="/images/Ch1.pdf" class="btn btn-dark mx-2 download-pdf" data-pdf-path="/images/Ch1.pdf" download>Download PDF</a>
+          </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-lg-4 col-md-6 col-12 mb-4">
+        <div class="card shadow">
+          <div class="card-body d-flex flex-column align-items-center"
+            style="background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);">
+            <!-- <h3 class="card-title text-center mb-3" style="color: white; font-size: 2rem;">1st Semester</h3> -->
+            <h4 class="card-title text-center " style="color: rgb(21, 21, 21); font-size: 2rem;">Chemistry</h4>
+            <hr style="width: 50%; border-color: rgb(240, 233, 233);">
+            <div class="embed-responsive embed-responsive-16by9 mb-3">
+              <embed class="embed-responsive-item" src="/images/Ch1.pdf" type="application/pdf">
+            </div>
+            <div class="text-center mt-auto">
+              <a href="#" class="btn btn-light mx-2 open-pdf" data-pdf-path="/images/Ch1.pdf">Open PDF</a>
+              <a href="/images/Ch1.pdf" class="btn btn-dark mx-2 download-pdf" data-pdf-path="/images/Ch1.pdf" download>Download PDF</a>
+          </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-lg-4 col-md-6 col-12 mb-4">
+        <div class="card shadow">
+          <div class="card-body d-flex flex-column align-items-center"
+            style="background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);">
+            <!-- <h3 class="card-title text-center mb-3" style="color: white; font-size: 2rem;">1st Semester</h3> -->
+            <h4 class="card-title text-center " style="color: rgb(21, 21, 21); font-size: 2rem;">Chemistry</h4>
+            <hr style="width: 50%; border-color: rgb(240, 233, 233);">
+            <div class="embed-responsive embed-responsive-16by9 mb-3">
+              <embed class="embed-responsive-item" src="/images/Ch1.pdf" type="application/pdf">
+            </div>
+            <div class="text-center mt-auto">
+              <a href="#" class="btn btn-light mx-2 open-pdf" data-pdf-path="/images/Ch1.pdf">Open PDF</a>
+              <a href="/images/Ch1.pdf" class="btn btn-dark mx-2 download-pdf" data-pdf-path="/images/Ch1.pdf" download>Download PDF</a>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+  <div class="d-flex justify-content-center align-items-center" style="height: 100px;">
+    <div>
+      <h2 class="text-primary" style="font-family:'Times New Roman', Times, serif;">Add Papers</h2>
+    </div>
+  </div>
+
+
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="form-group">
+          <label for="emailInput">Email Address</label>
+          <input type="email" class="form-control" id="emailInput" placeholder="Enter your email address">
+        </div>
+        <div class="form-group">
+          <label for="fileInput">Select PDF Files</label>
+          <input type="file" class="form-control-file" id="fileInput" accept=".pdf" multiple disabled>
+        </div>
+        <button id="uploadButton" class="btn btn-primary btn-sm btn-block" disabled>Upload</button>
+      </div>
+    </div>
+  </div>
+  <hr>
+
+  <script>
+    let storedPDFs = JSON.parse(localStorage.getItem('pdfs')) || [];
+
+    function createCard(pdf) {
+      const cardHtml = `
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow">
+              <div class="card-body" style="background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);">
+                <h3 class="card-title text-center mb-3">${pdf.title}</h3>
+                <div class="embed-responsive embed-responsive-16by9 mb-3">
+                  <embed class="embed-responsive-item" src="${pdf.dataUrl}" type="application/pdf">
+                </div>
+                <p class="text-center mb-2">Uploaded by: ${pdf.email}</p>
+                <div class="d-flex justify-content-center">
+                  <a href="#" class="btn btn-light mx-2 open-pdf" data-pdf-path="${pdf.dataUrl}">Open PDF</a>
+                  <a href="${pdf.dataUrl}" class="btn btn-secondary btn-sm download-pdf" download="${pdf.title}">Download PDF</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+      // Append card HTML to the pdfContainer
+      document.getElementById('pdfContainer').innerHTML += cardHtml;
+
+      // Add event listeners to the newly created buttons
+      const openPdfButtons = document.querySelectorAll('.open-pdf');
+      openPdfButtons.forEach(function (openPdfButton) {
+        openPdfButton.addEventListener('click', function (event) {
+          event.preventDefault(); // Prevent default link behavior
+          const pdfPath = openPdfButton.getAttribute('data-pdf-path');
+          window.open(pdfPath, '_blank');
+        });
+      });
+
+      const downloadPdfButtons = document.querySelectorAll('.download-pdf');
+      downloadPdfButtons.forEach(function (downloadPdfButton) {
+        downloadPdfButton.addEventListener('click', function (event) {
+          event.preventDefault(); // Prevent default link behavior
+          const pdfPath = downloadPdfButton.getAttribute('href');
+          const link = document.createElement('a');
+          link.href = pdfPath;
+          link.download = pdfPath.substring(pdfPath.lastIndexOf('/') + 1);
+          link.click();
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const fileInput = document.getElementById('fileInput');
+      const uploadButton = document.getElementById('uploadButton');
+
+      fileInput.disabled = true;
+      uploadButton.disabled = true;
+
+      document.getElementById('emailInput').addEventListener('input', function (event) {
+        const userEmail = event.target.value;
+        const isValidEmail = isEmail(userEmail);
+
+        fileInput.disabled = !isValidEmail;
+        uploadButton.disabled = !isValidEmail;
+      });
+
+      fileInput.addEventListener('change', function (event) {
+        uploadButton.disabled = event.target.files.length === 0;
+      });
+
+      uploadButton.addEventListener('click', function () {
+        const userEmail = document.getElementById('emailInput').value;
+        const files = fileInput.files;
+
+        const newPDFs = [];
+
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+              const pdf = {
+                id: Date.now(), // Unique ID for each PDF
+                title: file.name,
+                dataUrl: event.target.result,
+                email: userEmail
+              };
+              newPDFs.push(pdf);
+              createCard(pdf);
+            };
+            reader.readAsDataURL(file);
+          }
+        }
+
+        // Merge new PDFs with existing ones
+        storedPDFs = storedPDFs.concat(newPDFs);
+
+        // Store all PDFs back to localStorage
+        localStorage.setItem('pdfs', JSON.stringify(storedPDFs));
+
+        // Reset input fields
+        document.getElementById('emailInput').value = '';
+        fileInput.value = '';
+        fileInput.disabled = true;
+        uploadButton.disabled = true;
+      });
+
+      function isEmail(email) {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+      }
+
+      // Populate PDFs on page load
+      storedPDFs.forEach(createCard);
+    });
+
+    document.querySelectorAll('.open-pdf').forEach(function(element) {
+        element.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default link behavior
+            var pdfPath = this.getAttribute('data-pdf-path');
+            window.open(pdfPath, '_blank'); // Open PDF in a new tab/window
+        });
+    });
+  </script>
+
+</body>
+
+</html>
